@@ -4,10 +4,17 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
+#define S0 15
+#define S1 2
+#define S2 4
+#define S3 5
+#define sensorOut 18
+int frequency = 0;
+
 
 // Define Wifi SSID and PASS
-const char* ssid = "TP-Link_0CBB";
-const char* pass = "00179539";
+const char* ssid = "Baška";
+const char* pass = "noveheslo";
 WiFiClient wifi;
 
 // variable
@@ -19,6 +26,18 @@ int poc=0;
 void setup()
 {
   Serial.begin(9600);
+
+  pinMode(S0, OUTPUT);
+  pinMode(S1, OUTPUT);
+  pinMode(S2, OUTPUT);
+  pinMode(S3, OUTPUT);
+  pinMode(sensorOut, INPUT);
+     
+    // Setting frequency-scaling to 20%
+  
+  digitalWrite(S0,HIGH);
+  digitalWrite(S1,HIGH);
+  
   WiFi.begin(ssid, pass);
   Serial.println("Connecting");
 
@@ -46,7 +65,7 @@ void loop()
   if (WiFi.status() == WL_CONNECTED) // ak je ESP pripojene k wifi
   {
     HTTPClient http; // vytvorenie HTTP clienta
-    String server_name = "https://phpipaiot.azurewebsites.net/"; // nazov vasho webu a web stranky, ktoru chcete nacitat
+    String server_name = "https://skittlessorting.azurewebsites.net/"; // nazov vasho webu a web stranky, ktoru chcete nacitat
     http.begin(server_name.c_str());
     int httpCode = http.GET(); // http code
 
@@ -67,11 +86,16 @@ void loop()
   if (WiFi.status() == WL_CONNECTED) 
   {
     HTTPClient http;
-    String server_name = "https://skittlessorting.azurewebsites.net/index.php/?"; // nazov vasho webu a web stranky, ktoru chcete nacitat
-    server_name += "a="; // nazov premennej na webe
-    server_name += hodnota1; // hodnota premmenej
+    String server_name = "https://skittlessorting.azurewebsites.net/index.php?"; // nazov vasho webu a web stranky, ktoru chcete nacitat
+    server_name += "r="; // nazov premennej na webe
+    
+    server_name += r; // hodnota premmenej
+    server_name += "&g="; // nazov premennej na webe
+    server_name += g; // hodnota premennej
     server_name += "&b="; // nazov premennej na webe
-    server_name += hodnota2; // hodnota premennej
+    server_name += b; // hodnota premennej
+    server_name += "&t="; // nazov premennej na webe
+    server_name += t; // hodnota premennej
     http.begin(server_name.c_str());
     int httpCode = http.GET(); // http code
 

@@ -1,13 +1,15 @@
     <?php
         echo '<h1>getParameters page</h1>';
         
-        $sn1 = $_GET["a"];
-        $sn2 = $_GET["b"];
+        $r = $_GET["r"];
+        $g = $_GET["g"];
+        $b = $_GET["b"];
+        $t = $_GET["t"];
         
-        $text = "a=" . $sn1 . " b=" . $sn2;
-        $sum = $sn1 + $sn2;
+        $text = "r=" . $r . " g=" . $g . "b=" . $b . " t=" . $t;
+        // $sum = $sn1 + $sn2;
         
         echo $text;
         echo "<br>";
-        echo "Sum:" . $sum;
+        // echo "Sum:" . $sum;
     ?>
