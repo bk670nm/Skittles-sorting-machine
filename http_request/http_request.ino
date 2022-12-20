@@ -53,8 +53,43 @@ void setup()
 // vykonava sa dookola
 void loop()
 {
-
+  int r, g, b, t;
 // Váš kód ...
+// Setting red filtered photodiodes to be read
+    digitalWrite(S2,LOW);
+    digitalWrite(S3,LOW);
+    // Reading the output frequency
+    frequency = pulseIn(sensorOut, LOW);
+    // Printing the value on the serial monitor
+    Serial.print("R= ");//printing name
+    Serial.print(frequency);//printing RED color frequency
+    r = frequency;
+    Serial.print(" ");
+    delay(100);
+    // Setting Green filtered photodiodes to be read
+    digitalWrite(S2,HIGH);
+    digitalWrite(S3,HIGH);
+    // Reading the output frequency
+    frequency = pulseIn(sensorOut, LOW);
+    g = frequency;
+    // Printing the value on the serial monitor
+    Serial.print("G= ");//printing name
+    Serial.print(frequency);//printing RED color frequency
+    Serial.print(" ");
+    delay(100);
+    // Setting Blue filtered photodiodes to be read
+    digitalWrite(S2,LOW);
+    digitalWrite(S3,HIGH);
+    // Reading the output frequency
+    frequency = pulseIn(sensorOut, LOW);
+    // Printing the value on the serial monitor
+    b = frequency;
+    Serial.print("B= ");//printing name
+    Serial.print(frequency);//printing RED color frequency
+    Serial.println(" ");
+    delay(100);
+
+    t = 0;
 // pomocne premenne
   poc++;
   String hodnota1=String(poc);
@@ -65,7 +100,7 @@ void loop()
   if (WiFi.status() == WL_CONNECTED) // ak je ESP pripojene k wifi
   {
     HTTPClient http; // vytvorenie HTTP clienta
-    String server_name = "https://skittlessorting.azurewebsites.net/"; // nazov vasho webu a web stranky, ktoru chcete nacitat
+    String server_name = "https://skittlessorting.azurewebsites.net/index.php?"; // nazov vasho webu a web stranky, ktoru chcete nacitat
     http.begin(server_name.c_str());
     int httpCode = http.GET(); // http code
 
@@ -89,13 +124,13 @@ void loop()
     String server_name = "https://skittlessorting.azurewebsites.net/index.php?"; // nazov vasho webu a web stranky, ktoru chcete nacitat
     server_name += "r="; // nazov premennej na webe
     
-    server_name += r; // hodnota premmenej
+    server_name += String(r); // hodnota premmenej
     server_name += "&g="; // nazov premennej na webe
-    server_name += g; // hodnota premennej
+    server_name += String(g); // hodnota premennej
     server_name += "&b="; // nazov premennej na webe
-    server_name += b; // hodnota premennej
+    server_name += String(b); // hodnota premennej
     server_name += "&t="; // nazov premennej na webe
-    server_name += t; // hodnota premennej
+    server_name += String(t); // hodnota premennej
     http.begin(server_name.c_str());
     int httpCode = http.GET(); // http code
 
