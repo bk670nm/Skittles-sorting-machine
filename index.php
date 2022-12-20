@@ -1,7 +1,7 @@
     <?php
         echo '<h1>Baska page</h1>';
         
-        $data = json_decode(file_get_contents('php://input'), true);
+        $data = json_decode(file_get_contents('php://filter/resource/https://skittlessorting.azurewebsites.net/'), true);
         
         $r = $data["r"]
         $g = $data["g"]
