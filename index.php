@@ -1,10 +1,16 @@
     <?php
         echo '<h1>Baska page</h1>';
         
-        $r = $_GET["r"];
-        $g = $_GET["g"];
-        $b = $_GET["b"];
-        $t = $_GET["t"];
+        $data = json_decode(file_get_contents('php://input'), true);
+        
+        $r = $data["r"]
+        $g = $data["g"]
+        $b = $data["b"]
+        $t = $data["t"]
+
+        $db = fopen("db.txt", "w") or die("Unable to open file!");
+        fwrite($db, $data);
+        fclose($db);
         
         $text = "r=" . $r . " g=" . $g . " b=" . $b . " t=" . $t;
         // $sum = $sn1 + $sn2;

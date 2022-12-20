@@ -96,32 +96,11 @@ void loop()
   String hodnota2="22";
   String payload="";
 
-  // NACITANIE DAT Z WEBU
-  if (WiFi.status() == WL_CONNECTED) // ak je ESP pripojene k wifi
-  {
-    HTTPClient http; // vytvorenie HTTP clienta
-    String server_name = "https://skittlessorting.azurewebsites.net/index.php?"; // nazov vasho webu a web stranky, ktoru chcete nacitat
-    http.begin(server_name.c_str());
-    int httpCode = http.GET(); // http code
-
-    if (httpCode>0) 
-      payload= http.getString();
-      Serial.print("HTTP Response code: ");
-      Serial.println(httpCode); // vypisanie http code do Serial monitoru (200 - OK)
-      Serial.println(payload); // vypisanie celej html stranky, ktora sa na tejto url nachadza (zobrazene v serial monitore)
-
-    http.end();
-  }
-
-  int hodnota3 = (payload[2]); // nacitanie 2. znaku z html (>)
-  Serial.println(hodnota3); // vypisanie ASCII (62) hodnoty znaku >, ktory bol nacitany v payloade
-  delay(2000); // 2 sekundy 
-
-  // ZAPIS DAT NA WEB
+  String server_name = "https://skittlessorting.azurewebsites.net/index.php?"; // nazov vasho webu a web stranky, ktoru chcete nacitat
   if (WiFi.status() == WL_CONNECTED) 
   {
     HTTPClient http;
-    String server_name = "https://skittlessorting.azurewebsites.net/index.php?"; // nazov vasho webu a web stranky, ktoru chcete nacitat
+    
     server_name += "r="; // nazov premennej na webe
     
     server_name += String(r); // hodnota premmenej
@@ -147,4 +126,28 @@ void loop()
     }
     http.end();
   }  
+
+  // NACITANIE DAT Z WEBU
+  if (WiFi.status() == WL_CONNECTED) // ak je ESP pripojene k wifi
+  {
+    HTTPClient http; // vytvorenie HTTP clienta
+    //String server_name = "https://skittlessorting.azurewebsites.net/index.php?"; // nazov vasho webu a web stranky, ktoru chcete nacitat
+    http.begin(server_name.c_str());
+    int httpCode = http.GET(); // http code
+
+    if (httpCode>0) 
+      payload= http.getString();
+      Serial.print("HTTP Response code: ");
+      Serial.println(httpCode); // vypisanie http code do Serial monitoru (200 - OK)
+      Serial.println(payload); // vypisanie celej html stranky, ktora sa na tejto url nachadza (zobrazene v serial monitore)
+
+    http.end();
+  }
+
+  int hodnota3 = (payload[2]); // nacitanie 2. znaku z html (>)
+  Serial.println(hodnota3); // vypisanie ASCII (62) hodnoty znaku >, ktory bol nacitany v payloade
+  delay(2000); // 2 sekundy 
+
+  // ZAPIS DAT NA WEB
+  
 }
