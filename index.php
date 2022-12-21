@@ -1,7 +1,7 @@
     <?php
         echo '<h1>Baska page</h1>';
         
-        $data = json_decode(file_get_contents('php://filter/resource/https://skittlessorting.azurewebsites.net/'), true);
+        $data = json_decode(file_get_contents('https://skittlessorting.azurewebsites.net/'), true);
         
         $r = $data["r"]
         $g = $data["g"]
@@ -17,3 +17,5 @@
         echo $text;
         echo "<div class='background-color: rgb($r,$g,$b);'></div>";
     ?>
+
+   
