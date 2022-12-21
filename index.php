@@ -52,11 +52,7 @@
         fclose($file3);
     ?>
 
-    <section>
-        
-        <div>
-        </div>
-    </section>
+    
 </body>
 </html>
 
