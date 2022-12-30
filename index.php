@@ -1,5 +1,3 @@
-  
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,46 +8,31 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+
     <?php
-        echo '<h1>Baska page</h1>';
-        
-        //$data = json_decode(file_get_contents('https://skittlessorting.azurewebsites.net/'), true);
-        
-        //$r = $data["r"]
-        //$g = $data["g"]
-        //$b = $data["b"]
-        //$t = $data["t"]
+    echo '<h1>Baskasss page</h1>';
 
-        //$db = fopen("db.txt", "w") or die("Unable to open file!");
-        //fwrite($db, $data);
-        //fclose($db);
-        
-        //$text = "r=" . $r . " g=" . $g . " b=" . $b . " t=" . $t;
-        // $sum = $sn1 + $sn2;
-        //echo $text;
-        //echo "<div class='background-color: rgb($r,$g,$b);'></div>";
+    $r = $_GET["r"];
+    $g = $_GET["g"];
+    $b = $_GET["b"];
+    $t = $_GET["t"];
 
-        $r = $_GET["r"];
-        $g = $_GET["g"];
-        $b = $_GET["b"];
-        $t = $_GET["t"];
-        
-        $file1 = fopen("sensors.txt","w") or die("Unable to open file!");
-        $text = "r=" . $r . " g=" . $g . " b=" . $b . " t=" . $t;
-        
-        fwrite($file1, $text1);
-        fclose($file1);
-        
-        $file2 = fopen("actuator.txt","w") or die("Unable to open file!");
-        $text2 = "Value from actuator. Save this value to actuator.txt";
-        fwrite($file2, $text2);
-        fclose($file2);
-        
-        $file3 = fopen("actuator.txt","r") or die ("Subor neexistuje");
-        $text3 = fread($file3,filesize("actuator.txt"));
-        echo $text3;
-        fclose($file3);
+    $file1 = fopen("db.txt","w") or die("Unable to open file!");
+
+    $values = array();
+
+    fwrite($file1, $r . "\n" . $g . "\n" . $b . "\n" . $t);
+    fclose($file1);
+
+    if ($file = fopen("db.txt", "r")) {
+        $values = file("db.txt", FILE_IGNORE_NEW_LINES);
+        $values = array_map('intval', $values);
+
+        fclose($file);
+    }
+
+    var_dump($values); // array(4) { [0]=> int(10) [1]=> int(20) [2]=> int(30) [3]=> int(50) }
+    // tu rob co ti treba
     ?>
 
     
