@@ -1,42 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<?php
 
-    <?php
-    echo '<h1>Baskasss page</h1>';
-
-    $r = $_GET["r"];
-    $g = $_GET["g"];
-    $b = $_GET["b"];
-    $t = $_GET["t"];
-
-    $file1 = fopen("db.txt","w") or die("Unable to open file!");
-
-    $values = array();
-
-    fwrite($file1, $r . "\n" . $g . "\n" . $b . "\n" . $t);
-    fclose($file1);
-
-    if ($file = fopen("db.txt", "r")) {
-        $values = file("db.txt", FILE_IGNORE_NEW_LINES);
-        $values = array_map('intval', $values);
+function read_from_file($path)
+{
+    $data = array();
+    if ($file = fopen($path, "r")) {
+        $data = file($path, FILE_IGNORE_NEW_LINES);
 
         fclose($file);
     }
+    $data = array_map('intval', $data);
+    return $data;
+}
 
-    var_dump($values); // array(4) { [0]=> int(10) [1]=> int(20) [2]=> int(30) [3]=> int(50) }
-    // tu rob co ti treba
-    ?>
+function write_to_file($path, $data)
+{
+    $file = fopen($path, "w") or die("Unable to open file!");
 
-    
-</body>
-</html>
+    fwrite($file, $data["r"] . "\n" . $data["g"] . "\n" . $data["b"] . "\n" . $data["t"]);
 
-   
+    fclose($file);
+
+    return $data;
+}
+
+$method = $_SERVER['REQUEST_METHOD'];
+
+if ($method == 'GET') {
+    echo "THIS IS A GET REQUEST";
+    $values = read_from_file("db.txt");
+    // var_dump($values); // array(4) { [0]=> int(10) [1]=> int(20) [2]=> int(30) [3]=> int(50) }
+}
+
+if ($method == 'POST') {
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    $values = write_to_file("db.txt", $data);
+
+    // TODO: algoritmus
+
+    $angle = 30;
+
+    echo $angle;
+    exit;
+}
+echo '<h1>Baska page</h1>';
+// TODO: html in php
+?>
+<!-- TODO: html in html -->
