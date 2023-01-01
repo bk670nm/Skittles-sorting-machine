@@ -25,12 +25,6 @@ function write_to_file($path, $data)
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-if ($method == 'GET') {
-    echo "THIS IS A GET REQUEST";
-    $values = read_from_file("db.txt");
-    // var_dump($values); // array(4) { [0]=> int(10) [1]=> int(20) [2]=> int(30) [3]=> int(50) }
-}
-
 if ($method == 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
 
@@ -43,7 +37,15 @@ if ($method == 'POST') {
     echo $angle;
     exit;
 }
+
 echo '<h1>Baska page</h1>';
+
+if ($method == 'GET') {
+    $values = read_from_file("db.txt");
+    echo "r = " . $values["r"] . " g = "  . $values["g"] . " b = "  . $values["b"] . " t = " . $values["t"];
+    // var_dump($values); // array(4) { [0]=> int(10) [1]=> int(20) [2]=> int(30) [3]=> int(50) }
+}
+
 // TODO: html in php
 ?>
 <!-- TODO: html in html -->

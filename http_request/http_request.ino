@@ -3,6 +3,7 @@
 #include <WiFiClientSecure.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <ArduinoJson.h>
 
 #include "DHT.h"
 #include <Servo_ESP32.h>
@@ -21,9 +22,10 @@ Servo_ESP32 topServo;
 static const int bottomServoPin = 14;
 Servo_ESP32 bottomServo;
 
-
 const char* ssid = "Baška";
 const char* pass = "noveheslo";
+const String url = "https://skittlessorting.azurewebsites.net/"; 
+
 WiFiClient wifi;
 
 void setup()
@@ -76,78 +78,50 @@ void loop()
   topServo.write(130);
   delay(500);
   
-  
+  int angle = getAngleFromServer(red, green, blue, temp);
+  Serial.println("Angle");
+  Serial.println(angle);
 
-  //String hodnota1=String(poc);
-  //String hodnota2="22";
-  String payload="";
+  // TODO: nastavenie uhlu pre servo
 
-  
-// ZAPIS DAT NA WEB
-  String server_name = "https://skittlessorting.azurewebsites.net/index.php?"; 
-  
-  if (WiFi.status() == WL_CONNECTED) 
-  {
-    HTTPClient http;
-    
-    server_name += "R="; 
-    server_name += String(r); 
-    server_name += "&G="; 
-    server_name += String(g); 
-    server_name += "&B=";
-    server_name += String(b); 
-    server_name += "&T="; 
-    server_name += String(t); 
-    http.begin(server_name.c_str());
-    int httpCode = http.GET(); 
-
-    if (httpCode>0) 
-    {
-      payload= http.getString();
-      //Serial.print("HTTP Response code: ");
-      //Serial.println(httpCode); // vypisanie http code do Serial monitoru (200 - OK)
-      //Serial.println(payload); // vypisanie celej html stranky, ktora sa na tejto url nachadza (zobrazene v serial monitore)
-
-      //int hodnota3 = (payload[26]); // nacitanie 2. znaku z html (>)
-      //Serial.println(hodnota3); // vypisanie ASCII (62) hodnoty znaku >, ktory bol nacitany v payloade
-      //delay(2000); // 2 sekundy 
-    }
-    http.end();
-  }  
-
-  // NACITANIE DAT Z WEBU
-  if (WiFi.status() == WL_CONNECTED) // ak je ESP pripojene k wifi
-  {
-    HTTPClient http; // vytvorenie HTTP clienta
-    
-    http.begin(server_name.c_str());
-    int httpCode = http.GET(); // http code
-
-    if (httpCode>0) 
-      payload= http.getString();
-      //Serial.print("HTTP Response code: ");
-      //Serial.println(httpCode); // vypisanie http code do Serial monitoru (200 - OK)
-      //Serial.println(payload); // vypisanie celej html stranky, ktora sa na tejto url nachadza (zobrazene v serial monitore)
-
-    http.end();
-  }
-
-  int hodnota3 = (payload[2]); // nacitanie 2. znaku z html (>)
-  Serial.println(hodnota3); // vypisanie ASCII (62) hodnoty znaku >, ktory bol nacitany v payloade
-  delay(2000); // 2 sekundy 
-
+  delay(1000);
 
   for(int i = 130; i > 90; i--){
      topServo.write(i);
      delay(2);
   }
-  delay(500);
-  delay(500);
+  delay(1000);
 }
 
 int getAngleFromServer(int red, int green, int blue, int temperature){
   
-  return 0;
+  if (WiFi.status() == WL_CONNECTED) 
+  {
+    HTTPClient http;
+
+    http.begin(url);
+    http.addHeader("Content-Type", "Content-Type: application/json"); 
+    
+    StaticJsonDocument<64> json;
+
+    json["r"] = red;
+    json["g"] = green;
+    json["b"] = blue;
+    json["t"] = temperature;
+
+    String requestBody;
+    serializeJson(json, requestBody);
+
+    int httpResponseCode = http.POST(requestBody);
+
+    if(httpResponseCode > 0) {
+      String response =  http.getString();
+      return response.toInt();
+    }
+    else{
+      Serial.printf("Error with sending POST");
+    }
+  }  
 }
 
 
@@ -170,7 +144,8 @@ int getGreen(){
   return green;
 }
 float getTemperature(){
-  return dht.readTemperature();
+  float temperature = dht.readTemperature();
+  return isnan(temperature) ? 0.0 : dht.readTemperature();
 }
 
 void printRGBtoSerial(int red, int green, int blue, float temp){
