@@ -69,13 +69,10 @@ void loop()
   topServo.write(180); // initial position
   delay(500);
 
-  for(int i = 180; i > 130; i--){
+  for(int i = 180; i >= 130; i--){
      topServo.write(i);
      delay(2);
   }
-  delay(500);
-
-  topServo.write(130);
   delay(500);
   
   int angle = getAngleFromServer(red, green, blue, temp);
@@ -84,7 +81,6 @@ void loop()
 
   // TODO: nastavenie uhlu pre servo
 
-  delay(1000);
 
   for(int i = 130; i > 90; i--){
      topServo.write(i);
@@ -101,7 +97,6 @@ int getAngleFromServer(int red, int green, int blue, int temperature){
 
     http.begin(url);
     http.addHeader("Content-Type", "Content-Type: application/json"); 
-    
     StaticJsonDocument<64> json;
 
     json["r"] = red;

@@ -8,8 +8,7 @@ function read_from_file($path)
 
         fclose($file);
     }
-    $data = array_map('intval', $data);
-    return $data;
+    return array_map('intval', $data);
 }
 
 function write_to_file($path, $data)
@@ -43,7 +42,7 @@ echo '<h1>Baska page</h1>';
 if ($method == 'GET') {
     $values = read_from_file("db.txt");
     echo "r = " . $values["r"] . " g = "  . $values["g"] . " b = "  . $values["b"] . " t = " . $values["t"];
-    // var_dump($values); // array(4) { [0]=> int(10) [1]=> int(20) [2]=> int(30) [3]=> int(50) }
+    var_dump($values); // array(4) { [0]=> int(10) [1]=> int(20) [2]=> int(30) [3]=> int(50) }
 }
 
 // TODO: html in php
