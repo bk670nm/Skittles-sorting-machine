@@ -41,7 +41,7 @@ echo '<h1>Baska page</h1>';
 
 if ($method == 'GET') {
     $values = read_from_file("db.txt");
-    echo "r = " . $values["r"] . " g = "  . $values["g"] . " b = "  . $values["b"] . " t = " . $values["t"];
+    echo "r = " . $values[0] . " g = "  . $values[1] . " b = "  . $values[2] . " t = " . $values[3];
     var_dump($values); // array(4) { [0]=> int(10) [1]=> int(20) [2]=> int(30) [3]=> int(50) }
 }
 
