@@ -31,7 +31,7 @@
         if ($data["r"] > 10 and $data["r"] < 16 and $data["g"] >=13 and $data["g"] <= 20  ){ // orange, yellow
             $angle = 30;
         }
-        else if($data["r"] >= 15 and $data["r"] <= 20 and $data["g"] >= 13 and $data["g"] <= 18){ // green
+        else if($data["r"] >= 17 and $data["r"] <= 20 and $data["g"] >= 13 and $data["g"] <= 18){ // green
             $angle = 90;
         }
         else if($data["r"] >= 16 and $data["r"] <= 23 and $data["g"] >= 17 and $data["g"] <= 23 ){ // red, purple
@@ -42,10 +42,10 @@
         echo $angle;
         exit;
     }
-
+    $color = "No color";
     if ($method == 'GET') {
         $values = read_from_file("db.txt");
-        $color = "No color";
+
         if($angle == 30) {
             $color = "Orange";
         }
