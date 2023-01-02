@@ -1,4 +1,26 @@
 <?php
+    function read_from_file($path)
+    {
+        $data = array();
+        if ($file = fopen($path, "r")) {
+            $data = file($path, FILE_IGNORE_NEW_LINES);
+            fclose($file);
+        }
+        return array_map('intval', $data);
+    }
+
+    function write_to_file($path, $data)
+    {
+        $file = fopen($path, "w") or die("Unable to open file!");
+
+        fwrite($file, $data["r"] . "\n" . $data["g"] . "\n" . $data["b"] . "\n" . $data["t"]);
+
+        fclose($file);
+
+        return $data;
+    }
+
+
     $page = $_SERVER['PHP_SELF'];
     $sec = "3";
 ?>
@@ -20,26 +42,7 @@
         <div class="bg-text">
             <h1>Skittles sorting machine</h1>
             <?php
-                function read_from_file($path)
-                {
-                    $data = array();
-                    if ($file = fopen($path, "r")) {
-                        $data = file($path, FILE_IGNORE_NEW_LINES);
-                        fclose($file);
-                    }
-                    return array_map('intval', $data);
-                }
 
-                function write_to_file($path, $data)
-                {
-                    $file = fopen($path, "w") or die("Unable to open file!");
-
-                    fwrite($file, $data["r"] . "\n" . $data["g"] . "\n" . $data["b"] . "\n" . $data["t"]);
-
-                    fclose($file);
-
-                    return $data;
-                }
 
                 $method = $_SERVER['REQUEST_METHOD'];
                 $angle = 120; // default
