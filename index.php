@@ -1,11 +1,10 @@
 <?php
-    function read_from_file($path)
+    function read_from_file($path) : array
     {
-        $data = array();
-        if ($file = fopen($path, "r")) {
-            $data = file($path, FILE_IGNORE_NEW_LINES);
-            fclose($file);
-        }
+        $file = fopen($path, "r") or die("Unable to open file!");
+        $data = file($path, FILE_IGNORE_NEW_LINES);
+        fclose($file);
+
         return array_map('intval', $data);
     }
 
@@ -34,10 +33,10 @@
         else if($data["r"] >= 11 and $data["r"] <= 14 and $data["g"] >=13 and $data["g"] <= 15  ){ // yellow
             $angle = 30;
         }
-        else if($data["r"] >= 16 and $data["r"] <= 20 and $data["g"] >= 15 and $data["g"] <= 18){ // green
+        else if($data["r"] >= 16 and $data["r"] <= 20 and $data["g"] >= 14 and $data["g"] <= 18){ // green
             $angle = 90;
         }
-        else if($data["r"] >= 16 and $data["r"] <= 23 and $data["g"] >= 17 and $data["g"] <= 23 ){ // red, purple
+        else if($data["r"] >= 16 and $data["r"] <= 23 and $data["g"] >= 17 and $data["g"] <= 25 ){ // red, purple
             $angle = 60;
         }
 
@@ -48,16 +47,16 @@
     $color = "No color";
     $val = read_from_file("db.txt");
     if ($method == 'GET') {
-        if ($val[0] >= 13 and $val[0] <= 15 and $val[1] >=15 and $val[1] <= 20  ){ // orange) {
-            $color = "Orange/Yellow";
+        if ($val[0] >= 12 and $val[0] <= 15 and $val[1] >=15 and $val[1] <= 20  ){ // orange) {
+            $color = "Orange";
         }
         else if($val[0] >= 11 and $val[0] <= 14 and $val[1] >=13 and $val[1] <= 15 ){ // yellow
-            $color = "Orange/Yellow";
+            $color = "Yellow";
         }
-        else if($val[0] >= 16 and $val[0] <= 20 and $val[1] >= 15 and $val[1] <= 18){
+        else if($val[0] >= 16 and $val[0] <= 20 and $val[1] >= 14 and $val[1] <= 18){ // green
             $color = "Green";
         }
-        else if($val[0] >= 16 and $val[0] <= 23 and $val[1] >= 17 and $val[1] <= 23) { // red,purple
+        else if($val[0] >= 16 and $val[0] <= 23 and $val[1] >= 17 and $val[1] <= 25) { // red,purple
             $color = "Red/Purple";
         }
     }
