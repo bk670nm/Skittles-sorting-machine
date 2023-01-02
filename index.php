@@ -53,10 +53,10 @@
         else if($val[0] >= 11 and $val[0] <= 14 and $val[1] >=13 and $val[1] <= 15 ){ // yellow
             $color = "Yellow";
         }
-        else if($val[0] >= 16 and $val[0] <= 20 and $val[1] >= 14 and $val[1] <= 18){ // green
+        else if($val[0] >= 16 and $val[0] <= 20 and $val[1] >= 14 and $val[1] <= 17){ // green
             $color = "Green";
         }
-        else if($val[0] >= 16 and $val[0] <= 23 and $val[1] >= 17 and $val[1] <= 25) { // red,purple
+        else if($val[0] >= 16 and $val[0] <= 23 and $val[1] > 17 and $val[1] <= 26) { // red,purple
             $color = "Red/Purple";
         }
     }
