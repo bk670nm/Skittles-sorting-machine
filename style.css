@@ -10,7 +10,7 @@ body, html {
 
 .bg-image {
     /* The image used */
-    background-image: url("skittles3.jpg");
+    background-image: url("skittles2.jpg");
 
     /* Add the blur effect */
     filter: blur(8px);

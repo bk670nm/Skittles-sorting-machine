@@ -75,12 +75,7 @@ void setup()
 
 void loop()
 {
-  digitalWrite(rPin, HIGH);
-  digitalWrite(gPin, HIGH);
-  digitalWrite(bPin, HIGH);
-  delay(200);
-  
-  if(!digitalRead(btnPin)) {
+  if(!digitalRead(btnPin) && WiFi.status() == WL_CONNECTED) {
       turnOfLeds();
       topServo.write(180); 
       delay(500);

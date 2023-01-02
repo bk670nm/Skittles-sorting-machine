@@ -20,6 +20,42 @@
         return $data;
     }
 
+    $method = $_SERVER['REQUEST_METHOD'];
+    $angle = 120; // default
+
+    if ($method == 'POST') {
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $values = write_to_file("db.txt", $data);
+
+        if ($data["r"] > 10 and $data["r"] <= 16 and $data["g"] >=13 and $data["g"] <= 20  ){ // orange, yellow
+            $angle = 30;
+        }
+        else if($data["r"] >= 16 and $data["r"] <= 23 and $data["g"] >= 17 and $data["g"] <= 23 ){ // red, purple
+            $angle = 60;
+        }
+        else if($data["r"] >= 15 and $data["r"] <= 20 and $data["g"] >= 13 and $data["g"] <= 18){ // green
+            $angle = 90;
+        }
+
+        echo $angle;
+        exit;
+    }
+
+    if ($method == 'GET') {
+        $values = read_from_file("db.txt");
+        $color = "No color";
+        if($angle == 30) {
+            $color = "Orange";
+        }
+        else if($angle == 60){
+            $color = "Red";
+        }
+        else if($angle == 90){
+            $color = "Green";
+        }
+
+    }
 
     $page = $_SERVER['PHP_SELF'];
     $sec = "3";
@@ -42,47 +78,9 @@
         <div class="bg-text">
             <h1>Skittles sorting machine</h1>
             <?php
-
-
-                $method = $_SERVER['REQUEST_METHOD'];
-                $angle = 120; // default
-
-                if ($method == 'POST') {
-                    $data = json_decode(file_get_contents('php://input'), true);
-
-                    $values = write_to_file("db.txt", $data);
-
-                    if ($data["r"] > 10 and $data["r"] <= 16 and $data["g"] >=13 and $data["g"] <= 20  ){ // orange, yellow
-                        $angle = 30;
-                    }
-                    else if($data["r"] >= 16 and $data["r"] <= 23 and $data["g"] >= 17 and $data["g"] <= 23 ){ // red, purple
-                        $angle = 60;
-                    }
-                    else if($data["r"] >= 15 and $data["r"] <= 20 and $data["g"] >= 13 and $data["g"] <= 18){ // green
-                        $angle = 90;
-                    }
-
-                    echo $angle;
-                    exit;
-                }
-
-                if ($method == 'GET') {
-                    $values = read_from_file("db.txt");
-                    $color = "No color";
-                    if($angle == 30) {
-                        $color = "Orange";
-                    }
-                    else if($angle == 60){
-                        $color = "Red";
-                    }
-                    else if($angle == 90){
-                        $color = "Green";
-                    }
-
-                    echo '<p>RGB: '.$values[0].'   '. $values[1] .'   '. $values[2] .'</p>';
-                    echo '<p>Actual color: '.$color.'</p>';
-                    echo '<p>Temperature: '. $values[3].'</p>';
-                }
+                echo '<p>RGB: '.$values[0].'   '. $values[1] .'   '. $values[2] .'</p>';
+                echo '<p>Actual color: '.$color.'</p>';
+                echo '<p>Temperature: '. $values[3].'</p>';
             ?>
         </div>
     </body>
