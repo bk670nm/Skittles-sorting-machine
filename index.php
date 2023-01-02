@@ -28,15 +28,16 @@
 
         $values = write_to_file("db.txt", $data);
 
-        if ($data["r"] > 10 and $data["r"] <= 16 and $data["g"] >=13 and $data["g"] <= 20  ){ // orange, yellow
+        if ($data["r"] > 10 and $data["r"] < 16 and $data["g"] >=13 and $data["g"] <= 20  ){ // orange, yellow
             $angle = 30;
-        }
-        else if($data["r"] >= 16 and $data["r"] <= 23 and $data["g"] >= 17 and $data["g"] <= 23 ){ // red, purple
-            $angle = 60;
         }
         else if($data["r"] >= 15 and $data["r"] <= 20 and $data["g"] >= 13 and $data["g"] <= 18){ // green
             $angle = 90;
         }
+        else if($data["r"] >= 16 and $data["r"] <= 23 and $data["g"] >= 17 and $data["g"] <= 23 ){ // red, purple
+            $angle = 60;
+        }
+
 
         echo $angle;
         exit;

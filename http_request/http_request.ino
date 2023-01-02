@@ -85,8 +85,7 @@ void loop()
          delay(2);
       }
       delay(500);
-      
-      
+   
       temp = getTemperature();
       red = getRed();
       green = getGreen();
