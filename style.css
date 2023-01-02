@@ -1,40 +1,16 @@
-/*html {*/
-/*    background: url(skittles.jpg) no-repeat center center fixed;*/
-/*    -webkit-background-size: cover;*/
-/*    -moz-background-size: cover;*/
-/*    -o-background-size: cover;*/
-/*    background-size: cover;*/
-/*}*/
-
-
-/*body {*/
-/*    margin: 0;*/
-/*    height: 100%;*/
-/*}*/
-/*.bg {*/
-/*    !* The image used *!*/
-/*    background-image: url("skittles.jpg");*/
-
-/*    !* Full height *!*/
-/*    height: 100%;*/
-
-/*    !* Center and scale the image nicely *!*/
-/*    background-position: center;*/
-/*    background-repeat: no-repeat;*/
-/*    background-size: cover;*/
-/*}*/
-
 body, html {
     height: 100%;
 }
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 .bg-image {
     /* The image used */
-    background-image: url("skittles.jpg");
+    background-image: url("skittles2.jpg");
 
     /* Add the blur effect */
     filter: blur(8px);
@@ -64,4 +40,11 @@ body, html {
     width: 80%;
     padding: 20px;
     text-align: center;
+}
+
+h1{
+    margin-bottom: 5%;
+}
+p{
+    margin-bottom: 1%;
 }

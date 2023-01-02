@@ -1,58 +1,7 @@
 <?php
-    function read_from_file($path)
-    {
-        $data = array();
-        if ($file = fopen($path, "r")) {
-            $data = file($path, FILE_IGNORE_NEW_LINES);
-            fclose($file);
-        }
-        return array_map('intval', $data);
-    }
-
-    function write_to_file($path, $data)
-    {
-        $file = fopen($path, "w") or die("Unable to open file!");
-
-        fwrite($file, $data["r"] . "\n" . $data["g"] . "\n" . $data["b"] . "\n" . $data["t"]);
-
-        fclose($file);
-
-        return $data;
-    }
-
-    $method = $_SERVER['REQUEST_METHOD'];
-
-    if ($method == 'POST') {
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        $values = write_to_file("db.txt", $data);
-
-
-        $angle = 120; // default
-
-        if ($data["r"] > 10 and $data["r"] <= 12 and $data["g"] >=14 and $data["g"] <= 20  ){ // orange, yellow
-            $angle = 30;
-        }
-        else if($data["r"] >= 16 and $data["r"] <= 23 and $data["g"] >= 17 and $data["g"] <= 23 ){ // red, purple
-            $angle = 60;
-        }
-        else if($data["r"] >= 15 and $data["r"] <= 20 and $data["g"] >= 13 and $data["g"] <= 18){ // green
-            $angle = 90;
-        }
-
-        echo $angle;
-        exit;
-    }
-
-    if ($method == 'GET') {
-        $values = read_from_file("db.txt");
-        echo '<p>'.$values[0].'   '. $values[1] .'   '. $values[2] .'   '. $values[3].'</p>';
-    }
     $page = $_SERVER['PHP_SELF'];
-    $sec = "2";
+    $sec = "3";
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -70,7 +19,68 @@
 
         <div class="bg-text">
             <h1>Skittles sorting machine</h1>
-            <p>And I'm a Photographer</p>
+            <?php
+                function read_from_file($path)
+                {
+                    $data = array();
+                    if ($file = fopen($path, "r")) {
+                        $data = file($path, FILE_IGNORE_NEW_LINES);
+                        fclose($file);
+                    }
+                    return array_map('intval', $data);
+                }
+
+                function write_to_file($path, $data)
+                {
+                    $file = fopen($path, "w") or die("Unable to open file!");
+
+                    fwrite($file, $data["r"] . "\n" . $data["g"] . "\n" . $data["b"] . "\n" . $data["t"]);
+
+                    fclose($file);
+
+                    return $data;
+                }
+
+                $method = $_SERVER['REQUEST_METHOD'];
+                $angle = 120; // default
+
+                if ($method == 'POST') {
+                    $data = json_decode(file_get_contents('php://input'), true);
+
+                    $values = write_to_file("db.txt", $data);
+
+                    if ($data["r"] > 10 and $data["r"] <= 16 and $data["g"] >=13 and $data["g"] <= 20  ){ // orange, yellow
+                        $angle = 30;
+                    }
+                    else if($data["r"] >= 16 and $data["r"] <= 23 and $data["g"] >= 17 and $data["g"] <= 23 ){ // red, purple
+                        $angle = 60;
+                    }
+                    else if($data["r"] >= 15 and $data["r"] <= 20 and $data["g"] >= 13 and $data["g"] <= 18){ // green
+                        $angle = 90;
+                    }
+
+                    echo $angle;
+                    exit;
+                }
+
+                if ($method == 'GET') {
+                    $values = read_from_file("db.txt");
+                    $color = "No color";
+                    if($angle == 30) {
+                        $color = "Orange";
+                    }
+                    else if($angle == 60){
+                        $color = "Red";
+                    }
+                    else if($angle == 90){
+                        $color = "Green";
+                    }
+
+                    echo '<p>RGB: '.$values[0].'   '. $values[1] .'   '. $values[2] .'</p>';
+                    echo '<p>Actual color: '.$color.'</p>';
+                    echo '<p>Temperature: '. $values[3].'</p>';
+                }
+            ?>
         </div>
     </body>
 </html>

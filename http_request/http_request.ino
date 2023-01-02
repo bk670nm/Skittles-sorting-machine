@@ -81,7 +81,7 @@ void loop()
   delay(200);
   
   if(!digitalRead(btnPin)) {
-      
+      turnOfLeds();
       topServo.write(180); 
       delay(500);
     
@@ -99,8 +99,11 @@ void loop()
       printRGBtoSerial();
       
       angle = getAngleFromServer();
-      Serial.print("Angle");
+      Serial.print("Angle ");
       Serial.println(angle);
+      
+      colorLed(angle);
+      delay(1000);
     
       bottomServo.write(angle);
       delay(500);
@@ -143,6 +146,31 @@ int getAngleFromServer(){
   }  
 }
 
+void colorLed(int angle){
+  if(angle == 60) {
+    analogWrite(rPin, 102);
+    analogWrite(gPin, 0);
+    analogWrite(bPin, 102);
+    delay(100);
+  }
+  if(angle == 30){
+    analogWrite(rPin, 255);
+    analogWrite(gPin, 255);
+    analogWrite(bPin, 0);
+    delay(100);
+  }
+  if(angle == 90){
+    analogWrite(rPin, 0);
+    analogWrite(gPin, 255);
+    analogWrite(bPin, 0);
+    delay(100);
+  }
+}
+void turnOfLeds(){
+  digitalWrite(rPin, LOW);
+  digitalWrite(gPin, LOW);
+  digitalWrite(bPin, LOW);
+}
 
 int getRed(){
   digitalWrite(S2,LOW);
@@ -177,5 +205,5 @@ void printRGBtoSerial(){
   Serial.print("B= ");//printing name
   Serial.print(blue);//printing RED color frequency
   Serial.println(" ");
-  delay(1000);
+  delay(100);
 }
