@@ -78,18 +78,18 @@ void loop()
   digitalWrite(rPin, HIGH);
   digitalWrite(gPin, HIGH);
   digitalWrite(bPin, HIGH);
-  topServo.write(130);
   delay(200);
+  
   if(!digitalRead(btnPin)) {
       
-//      topServo.write(180); // initial position
-//      delay(500);
-//    
-//      for(int i = 180; i >= 130; i--){
-//         topServo.write(i);
-//         delay(2);
-//      }
-//      delay(500);
+      topServo.write(180); 
+      delay(500);
+    
+      for(int i = 180; i >= 130; i--){
+         topServo.write(i);
+         delay(2);
+      }
+      delay(500);
       
       
       temp = getTemperature();
@@ -102,13 +102,12 @@ void loop()
       Serial.print("Angle");
       Serial.println(angle);
     
-      // TODO: nastavenie uhlu pre servo
       bottomServo.write(angle);
       delay(500);
     
       for(int i = 130; i > 90; i--){
          topServo.write(i);
-         delay(2);
+         delay(5);
       }
       delay(1000);  
   }
