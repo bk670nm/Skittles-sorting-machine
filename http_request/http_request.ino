@@ -14,6 +14,11 @@
 #define S2 4
 #define S3 5
 #define sensorOut 18
+#define rPin 21
+#define gPin 22
+#define bPin 23
+#define btnPin 19
+
 DHT dht(DHT11PIN, DHT11);
 
 static const int topServoPin = 13;
@@ -25,6 +30,12 @@ Servo_ESP32 bottomServo;
 const char* ssid = "Baška";
 const char* pass = "noveheslo";
 const String url = "https://skittlessorting.azurewebsites.net/"; 
+
+float temp = 0.0;
+int red = 0;
+int green = 0;
+int blue = 0;
+int angle = 0;
 
 WiFiClient wifi;
 
@@ -38,6 +49,10 @@ void setup()
   pinMode(S2, OUTPUT);
   pinMode(S3, OUTPUT);
   pinMode(sensorOut, INPUT);
+  pinMode(btnPin, INPUT_PULLUP);
+  pinMode(rPin, OUTPUT);
+  pinMode(gPin, OUTPUT);
+  pinMode(bPin, OUTPUT);
      
   // Setting frequency-scaling to 20%
   digitalWrite(S0,HIGH);
@@ -60,36 +75,46 @@ void setup()
 
 void loop()
 {
-  float temp = getTemperature();
-  int red = getRed();
-  int green = getGreen();
-  int blue = getBlue();
-  printRGBtoSerial(red, green, blue, temp);
-  
-  topServo.write(180); // initial position
-  delay(500);
-
-  for(int i = 180; i >= 130; i--){
-     topServo.write(i);
-     delay(2);
+  digitalWrite(rPin, HIGH);
+  digitalWrite(gPin, HIGH);
+  digitalWrite(bPin, HIGH);
+  topServo.write(130);
+  delay(200);
+  if(!digitalRead(btnPin)) {
+      
+//      topServo.write(180); // initial position
+//      delay(500);
+//    
+//      for(int i = 180; i >= 130; i--){
+//         topServo.write(i);
+//         delay(2);
+//      }
+//      delay(500);
+      
+      
+      temp = getTemperature();
+      red = getRed();
+      green = getGreen();
+      blue = getBlue();
+      printRGBtoSerial();
+      
+      angle = getAngleFromServer();
+      Serial.print("Angle");
+      Serial.println(angle);
+    
+      // TODO: nastavenie uhlu pre servo
+      bottomServo.write(angle);
+      delay(500);
+    
+      for(int i = 130; i > 90; i--){
+         topServo.write(i);
+         delay(2);
+      }
+      delay(1000);  
   }
-  delay(500);
-  
-  int angle = getAngleFromServer(red, green, blue, temp);
-  Serial.println("Angle");
-  Serial.println(angle);
-
-  // TODO: nastavenie uhlu pre servo
-
-
-  for(int i = 130; i > 90; i--){
-     topServo.write(i);
-     delay(2);
-  }
-  delay(1000);
 }
 
-int getAngleFromServer(int red, int green, int blue, int temperature){
+int getAngleFromServer(){
   
   if (WiFi.status() == WL_CONNECTED) 
   {
@@ -102,7 +127,7 @@ int getAngleFromServer(int red, int green, int blue, int temperature){
     json["r"] = red;
     json["g"] = green;
     json["b"] = blue;
-    json["t"] = temperature;
+    json["t"] = temp;
 
     String requestBody;
     serializeJson(json, requestBody);
@@ -123,27 +148,24 @@ int getAngleFromServer(int red, int green, int blue, int temperature){
 int getRed(){
   digitalWrite(S2,LOW);
   digitalWrite(S3,LOW);
-  int red = pulseIn(sensorOut, LOW);
-  return red;
+  return pulseIn(sensorOut, LOW);
 }
 int getBlue(){
   digitalWrite(S2,LOW);
   digitalWrite(S3,HIGH);
-  int blue = pulseIn(sensorOut, LOW);
-  return blue;
+  return pulseIn(sensorOut, LOW);
 }
 int getGreen(){
   digitalWrite(S2,HIGH);
   digitalWrite(S3,HIGH);
-  int green = pulseIn(sensorOut, LOW);
-  return green;
+  return pulseIn(sensorOut, LOW);
 }
 float getTemperature(){
   float temperature = dht.readTemperature();
   return isnan(temperature) ? 0.0 : dht.readTemperature();
 }
 
-void printRGBtoSerial(int red, int green, int blue, float temp){
+void printRGBtoSerial(){
   Serial.print("Temperature: ");
   Serial.print(temp);
   Serial.print(" ");
