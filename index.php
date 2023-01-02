@@ -30,7 +30,7 @@
         if ($data["r"] >= 12 and $data["r"] <= 15 and $data["g"] >= 15 and $data["g"] <= 20  ){ // orange
             $angle = 30;
         }
-        else if($data["r"] >= 11 and $data["r"] <= 14 and $data["g"] >=13 and $data["g"] <= 15  ){ // yellow
+        else if($data["r"] >= 11 and $data["r"] <= 14 and $data["g"] >=12 and $data["g"] <= 15  ){ // yellow
             $angle = 30;
         }
         else if($data["r"] >= 15 and $data["r"] <= 20 and $data["g"] >= 14 and $data["g"] <= 15){ // green
@@ -50,7 +50,7 @@
         if ($val[0] >= 12 and $val[0] <= 15 and $val[1] >= 15 and $val[1] <= 20  ){ // orange) {
             $color = "Orange";
         }
-        else if($val[0] >= 11 and $val[0] <= 14 and $val[1] >=13 and $val[1] <= 15 ){ // yellow
+        else if($val[0] >= 11 and $val[0] <= 14 and $val[1] >=12 and $val[1] <= 15 ){ // yellow
             $color = "Yellow";
         }
         else if($val[0] >= 15 and $val[0] <= 20 and $val[1] >= 14 and $val[1] <= 15){ // green
